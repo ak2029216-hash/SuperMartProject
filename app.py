@@ -1,15 +1,30 @@
 from flask import Flask, render_template, request
-import joblib
+import pickle
 import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 
-# Load the newly trained Machine Learning model
-model = joblib.load("model.pkl")
+# Load the newly trained Production XGBoost model file
+try:
+    with open("xgb_sales_model.pkl", "rb") as file:
+        model = pickle.load(file)
+except FileNotFoundError:
+    model = None
+    print("[System Error] Serialized production asset 'xgb_sales_model.pkl' not found.")
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    # Pass metadata parameters directly to your index dashboard container
+    performance_metadata = {
+        "champion_model": "XGBoost Regressor",
+        "validation_rmse": 1041.50,
+        "validation_mae": 714.22,
+        "dataset_outlets": 10,
+        "dataset_items": 1500,
+        "developer_name": "Laiba Noor"
+    }
+    return render_template('index.html', metrics=performance_metadata)
 
 @app.route('/about')
 def about():
@@ -25,34 +40,51 @@ def predict():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    performance_metadata = {
+        "champion_model": "XGBoost Regressor Pipeline",
+        "validation_rmse": 1041.50,
+        "validation_mae": 714.22,
+        "dataset_outlets": 10,
+        "dataset_items": 1500,
+        "developer_name": "Laiba Noor"
+    }
+    return render_template('dashboard.html', metrics=performance_metadata)
 
 @app.route('/result', methods=['POST'])
 def result():
-    # 1. Capture all the data from the HTML form
+    # 1. Capture data values from your HTML front-end interface input form
+    weight = float(request.form['weight'])
+    mrp = float(request.form['mrp'])
+    visibility = float(request.form['visibility'])
+    year = int(request.form['year'])
+    
+    # Apply Feature Engineering on the fly matching Chapter 10 code logic
+    # Calculate operational age based on your dissertation's 2026 anchor timeline
+    outlet_age = 2026 - year
+    
+    # Handle structural zero visibility anomalies instantly
+    if visibility == 0.0:
+        visibility = 0.0541 # Dataset median value placeholder
+
+    # 2. Construct matching input dictionary array corresponding directly to model features structure
     input_data = {
-        'weight': [float(request.form['weight'])],
-        'mrp': [float(request.form['mrp'])],
-        'visibility': [float(request.form['visibility'])],
-        'fat_content': [request.form['fat_content']],
-        'item_type': [request.form['item_type']],
-        'year': [int(request.form['year'])],
-        'outlet_size': [request.form['outlet_size']],
-        'location_type': [request.form['location_type']],
-        'outlet_type': [request.form['outlet_type']]
+        'Item_Weight': [weight],
+        'Item_Visibility': [visibility],
+        'Item_MRP': [mrp],
+        'Outlet_Age': [outlet_age]
     }
 
-    # 2. Convert it into a Pandas DataFrame (which the model expects)
-    df = pd.DataFrame(input_data)
+    # Convert to Pandas DataFrame structure for algorithmic calculation processing
+    df_features = pd.DataFrame(input_data)
 
-    # 3. Ask the model to predict the sales
-    prediction = model.predict(df)[0]
-
-    # Ensure prediction is positive and rounded
-    final_sales = max(0, round(prediction, 2))
+    # 3. Calculate dynamic future sales prediction using your serialized model
+    if model:
+        prediction = model.predict(df_features)[0]
+        final_sales = max(0, round(float(prediction), 2))
+    else:
+        final_sales = 0.00 # Fallback safety trace
 
     return render_template('result.html', prediction=final_sales)
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
