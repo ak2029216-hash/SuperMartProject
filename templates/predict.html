@@ -107,16 +107,16 @@
         <form action="/result" method="POST">
             <div class="row g-4 mb-4">
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold text-secondary mb-2"><i class="fa-solid fa-weight-scale me-1"></i> Item Weight (in kg)</label>
+                    <label for="weight" class="form-label fw-semibold text-secondary mb-2"><i class="fa-solid fa-weight-scale me-1"></i> Item Weight (in kg)</label>
                     <div class="input-icon-wrapper">
-                        <input type="number" step="0.01" name="weight" class="form-control form-control-lg form-control-custom" placeholder="e.g., 12.35" required>
+                        <input type="number" step="0.01" name="weight" id="weight" class="form-control form-control-lg form-control-custom" placeholder="e.g., 12.35" required>
                         <i class="fa-solid fa-box"></i>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold text-secondary mb-2"><i class="fa-solid fa-tags me-1"></i> Item Maximum Retail Price (MRP)</label>
+                    <label for="mrp" class="form-label fw-semibold text-secondary mb-2"><i class="fa-solid fa-tags me-1"></i> Item Maximum Retail Price (MRP)</label>
                     <div class="input-icon-wrapper">
-                        <input type="number" step="0.01" name="mrp" class="form-control form-control-lg form-control-custom" placeholder="e.g., 141.42" required>
+                        <input type="number" step="0.01" name="mrp" id="mrp" class="form-control form-control-lg form-control-custom" placeholder="e.g., 141.42" required>
                         <i class="fa-solid fa-indian-rupee-sign"></i>
                     </div>
                 </div>
@@ -124,9 +124,9 @@
 
             <div class="row g-4 mb-5">
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold text-secondary mb-2"><i class="fa-solid fa-eye me-1"></i> Item On-Shelf Visibility Score (0.0 - 1.0)</label>
+                    <label for="visibility" class="form-label fw-semibold text-secondary mb-2"><i class="fa-solid fa-eye me-1"></i> Item On-Shelf Visibility Score (0.0 - 1.0)</label>
                     <div class="input-icon-wrapper">
-                        <input type="number" step="0.0001" name="visibility" class="form-control form-control-lg form-control-custom" placeholder="e.g., 0.0541" required>
+                        <input type="number" step="0.0001" name="visibility" id="visibility" class="form-control form-control-lg form-control-custom" placeholder="e.g., 0.0541" required>
                         <i class="fa-solid fa-sliders"></i>
                     </div>
                 </div>
