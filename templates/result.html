@@ -1,37 +1,126 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Prediction Result</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inference Calculation Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar-custom {
+            background: rgba(33, 37, 41, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .result-card {
+            background: #ffffff;
+            border: 1px solid rgba(224, 230, 240, 0.8);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .result-card:hover {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08) !important;
+        }
+        .card-header-gradient {
+            background: linear-gradient(135deg, #2ec4b6 0%, #0cb0a3 100%);
+            border: none;
+        }
+        .revenue-display {
+            font-size: 4.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+        .status-alert {
+            background: rgba(16, 185, 129, 0.05);
+            color: #065f46;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 14px;
+        }
+        .btn-return {
+            border: 2px solid #4361ee;
+            color: #4361ee;
+            border-radius: 12px;
+            padding: 12px 28px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .btn-return:hover {
+            background: #4361ee;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(67, 97, 238, 0.15);
+        }
+    </style>
 </head>
+<body class="bg-light">
 
-<body>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3 shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
+            <i class="fa-solid fa-chart-line text-info"></i> Super Mart Sales Prediction
+        </a>
+        <div>
+            <a class="btn btn-outline-light btn-sm me-2 rounded-3 px-3" href="/"><i class="fa-solid fa-house me-1"></i> Home</a>
+            <a class="btn btn-outline-light btn-sm me-2 rounded-3 px-3" href="/about"><i class="fa-solid fa-circle-info me-1"></i> About</a>
+            <a class="btn btn-outline-light btn-sm me-2 rounded-3 px-3" href="/dataset"><i class="fa-solid fa-database me-1"></i> Dataset</a>
+            <a class="btn btn-outline-light btn-sm rounded-3 px-3" href="/dashboard"><i class="fa-solid fa-gauge me-1"></i> Dashboard</a>
+        </div>
+    </div>
+</nav>
 
-<div class="container mt-5 text-center">
-
-<h1>Prediction Result</h1>
-
-<div class="card p-4 mt-4">
-
-<h2>
-Predicted Sales:
-</h2>
-
-<h1 class="text-success">
-₹ {{ prediction }}
-</h1>
-
+<div class="container my-5 flex-grow-1 d-flex align-items-center justify-content-center">
+    <div class="card result-card shadow-sm w-100" style="max-width: 600px;">
+        <div class="card-header-gradient text-white text-center py-4">
+            <div class="mb-2"><i class="fa-solid fa-circle-check fa-3x animate__animated animate__scaleIn"></i></div>
+            <h3 class="mb-0 fw-bold tracking-tight">Computation Complete</h3>
+        </div>
+        
+        <div class="card-body p-5 text-center">
+            <p class="text-secondary fw-medium mb-2 text-uppercase tracking-wider small">Expected Future SKU Revenue Output</p>
+            
+            <h1 class="revenue-display my-3">₹ {{ prediction }}</h1>
+            
+            <div class="status-alert p-3 my-4 text-start d-flex align-items-start gap-3 shadow-sm">
+                <i class="fa-solid fa-microchip text-success mt-1 fs-5"></i>
+                <div>
+                    <strong>Pipeline Status:</strong> 
+                    <span class="small d-block text-muted mt-1">Execution completed without engineering anomalies via your serialized XGBoost engine.</span>
+                </div>
+            </div>
+            
+            <hr class="my-4 rgba(0,0,0,0.05)">
+            
+            <a href="/" class="btn btn-return btn-lg px-4 shadow-sm">
+                <i class="fa-solid fa-chevron-left me-2 small"></i> Return to Dashboard Base
+            </a>
+        </div>
+    </div>
 </div>
 
-<a href="/predict" class="btn btn-primary mt-3">
-Predict Again
-</a>
-
-</div>
+<footer class="bg-dark text-white text-center p-4 mt-auto border-top border-secondary">
+    <div class="container">
+        <h6 class="fw-bold mb-1 text-light">Super Mart Sales Prediction Project</h6>
+        <p class="text-muted small mb-3">Machine Learning Based Retail Forecasting System</p>
+        <div class="d-flex justify-content-center gap-4 text-muted small flex-wrap">
+            <span><i class="fa-solid fa-user text-info me-1"></i> Developer: <strong>Laiba Noor</strong></span>
+            <span><i class="fa-solid fa-id-card text-warning me-1"></i> Roll No: <strong>JH/OL/BCA/JUL-23/1003</strong></span>
+            <span><i class="fa-solid fa-user-tie text-success me-1"></i> Supervisor: <strong>Dr. Abdul Majid</strong></span>
+        </div>
+    </div>
+</footer>
 
 </body>
-
 </html>
